@@ -11,11 +11,16 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/auth/login", { email, password });
+      const res = await axios.post("http://localhost:5000/auth/login", {
+        email,
+        password,
+      });
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("isLoggedIn", "true"); // ✅ added this line
       alert("Login successful!");
-      navigate("/"); // Redirect to homepage
+      navigate("/");
+      window.location.reload(); // ✅ force navbar update
     } catch (error) {
       alert("Login failed! " + (error.response?.data?.message || ""));
     }
@@ -29,8 +34,10 @@ function Login() {
       });
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("isLoggedIn", "true"); // ✅ added this line too
       alert("Google Login Successful!");
-      navigate("/"); // Redirect to homepage
+      navigate("/");
+      window.location.reload(); // ✅ same refresh here too
     } catch (error) {
       alert("Google Login failed!");
     }
