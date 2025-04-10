@@ -1,14 +1,15 @@
-// Layout.jsx
-import Navbar from "./navbar"; // Import Navbar component
+import Navbar from "./navbar";
+import { Outlet } from "react-router-dom"; // 👈 ye import zaroori hai!
 
-function Layout({ children }) {
+function Layout() {
   return (
     <div className="App">
-      <Navbar />  {/* Navbar will be displayed on every page */}
+      <Navbar />
       <h1>Sazon</h1>
-      <main>{children}</main>  {/* Dynamic content passed from other components */}
+      <main>
+        <Outlet /> {/* 👈 children ki jagah ye use karo in Routes */}
+      </main>
     </div>
   );
 }
-
 export default Layout;
