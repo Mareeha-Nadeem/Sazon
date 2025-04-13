@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import "./navbar.css"; // ✅ Import your external CSS file
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  // Check login status on page load
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
@@ -13,53 +13,29 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("token"); // in case token bhi store hai
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigate("/login");
   };
 
   return (
-    <nav style={navbarStyle}>
-      <Link to="/" style={linkStyle}>Home</Link>
-      <Link to="/menu" style={linkStyle}>Menu</Link>
+    <nav className="navbar">
+      <Link to="/">Home</Link>
+      <Link to="/menu">Menu</Link>
 
       {!isLoggedIn ? (
         <>
-          <Link to="/login" style={linkStyle}>Login</Link>
-          <Link to="/signup" style={linkStyle}>Signup</Link>
+          <Link to="/login">Login</Link>
+          <Link to="/signup">Signup</Link>
         </>
       ) : (
         <>
-          <Link to="/cart" style={linkStyle}>Cart</Link>
-          <button onClick={handleLogout} style={buttonStyle}>Logout</button>
+          <Link to="/cart">Cart</Link>
+          <button onClick={handleLogout} className="logout-btn">Logout</button>
         </>
       )}
     </nav>
   );
 }
-
-const navbarStyle = {
-  display: "flex",
-  justifyContent: "center",
-  gap: "20px",
-  backgroundColor: "#f5f5f5",
-  padding: "10px",
-  borderBottom: "1px solid #ccc",
-};
-
-const linkStyle = {
-  textDecoration: "none",
-  color: "#333",
-  fontWeight: "bold",
-};
-
-const buttonStyle = {
-  backgroundColor: "#ff4d4d",
-  color: "#fff",
-  border: "none",
-  padding: "6px 12px",
-  cursor: "pointer",
-  borderRadius: "4px",
-};
 
 export default Navbar;
