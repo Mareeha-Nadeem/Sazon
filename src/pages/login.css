@@ -1,0 +1,101 @@
+
+/* Fullscreen background with center-aligned content */
+.login-page {
+    height: 100vh;
+    width: 100vw; /* ← THIS IS THE FIX */
+    background-image: url('https://wallpapers.com/images/hd/food-4k-spdnpz7bhmx4kv2r.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  
+  
+
+/* Form styling */
+.login-form-container {
+    background-color: rgba(255, 255, 255, 0.897);  /* Light opacity background */
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 50px;
+    font-size: 24px;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #e65100;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #d64d00;
+}
+
+.or-divider {
+    margin: 30px 0;
+    position: relative;
+}
+
+.or-divider hr {
+    border: 0;
+    height: 2px;
+    background: #ccc;
+}
+
+.or-divider span {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f0f0f0;
+    color: black;
+    padding: 0 10px;
+}
+
+p {
+    font-size: 14px;
+    color: #555;
+}
+.login-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.logo-image {
+    height: 60px; /* size adjust kar le apni marzi se */
+    margin-top: 10px;
+}

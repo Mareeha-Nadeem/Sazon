@@ -57,6 +57,17 @@ app.post("/auth/login", async (req, res) => {
   }
 });
 
+// Menu Route - This is where we add the menu route
+app.get('/menu', async (req, res) => {
+  try {
+    const [menuItems] = await db.execute("SELECT * FROM menu_items"); // menu_items table se data fetch karo
+    res.status(200).json(menuItems); // Data ko frontend ko send karo
+  } catch (error) {
+    console.error("Menu fetch error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`🚀 Server running on http://localhost:${port}`);
