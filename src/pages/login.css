@@ -1,5 +1,3 @@
-
-/* Fullscreen background with center-aligned content */
 .login-page {
     height: 100vh;
     width: 100vw; /* ← THIS IS THE FIX */
@@ -92,10 +90,10 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 40px;
+    
 }
 
 .logo-image {
-    height: 60px; /* size adjust kar le apni marzi se */
-    margin-top: 10px;
-}
+    height: 34px; /* size adjust kar le apni marzi se */
+    
+}   

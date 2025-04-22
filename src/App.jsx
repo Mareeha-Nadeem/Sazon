@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/signup";
 import Menu from "./pages/menu";
 import Cart from "./pages/cart";
-import Navbar from "./components/Navbar"; // Navbar import
+import Navbar from "./components/navbar"; // Navbar import
 import './App.css'; // Import the CSS file for styling
 
 function App() {

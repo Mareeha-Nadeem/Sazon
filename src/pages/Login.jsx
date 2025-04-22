@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import './login.css';
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,31 +42,19 @@ function Login() {
       alert("Google Login failed!");
     }
   };
+
   return (
     <div className="login-page">
       <div className="login-form-container">
-      <div 
-  className="login-heading" 
-  style={{ 
-    display: 'flex', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    whiteSpace: 'nowrap', // THIS PREVENTS WRAPPING
-    gap: '8px' 
-  }}
->
-  <h2 style={{ margin: 0 }}>Login to</h2>
-  <img
-    src="sazon logo txt.png"
-    alt="Sazon Logo"
-    className="logo-image"
-    style={{ height: '30px' }}
-  />
-</div>
+        <div className="login-heading">
+          <h2>Login to</h2>
+          <img
+            src="sazon logo txt.png"
+            alt="Sazon Logo"
+            className="logo-image"
+          />
+        </div>
 
-
-
-  
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label>Email</label>
@@ -77,7 +66,7 @@ function Login() {
               required
             />
           </div>
-  
+
           <div className="input-group">
             <label>Password</label>
             <input
@@ -88,22 +77,22 @@ function Login() {
               required
             />
           </div>
-  
+
           <button type="submit">Login</button>
         </form>
-  
+
         <div className="or-divider">
           <hr />
           <span>OR</span>
         </div>
-  
+
         <GoogleOAuthProvider clientId="26833402978-kgr7hfustnkudlj6t1l1ah9adb9ung8k.apps.googleusercontent.com">
           <GoogleLogin
             onSuccess={handleGoogleSignIn}
             onError={() => console.log("Google Login Failed")}
           />
         </GoogleOAuthProvider>
-  
+
         <p>
           Don't have an account? <Link to="/signup">Sign up</Link>
         </p>

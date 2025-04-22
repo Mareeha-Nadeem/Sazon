@@ -1,39 +1,182 @@
+/* Make the whole page background work */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Menu container should cover full screen width */
 .menu-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 20px;
-  }
-  
-  .menu-item {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    width: 250px;
-    margin: 15px;
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .menu-item:hover {
-    transform: scale(1.05);
-  }
-  
-  .menu-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .menu-description {
-    font-size: 14px;
-    color: #777;
-  }
-  
-  .menu-price {
-    font-size: 16px;
-    color: #e74c3c;
-    font-weight: bold;
-  }
-  
+  width: 100vw;
+  min-height: 100vh;
+  background: white;
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Each category wrapper stays centered */
+.menu-category {
+  width: 100%;
+  max-width: 1400px;
+  margin-bottom: 3rem;
+}
+
+/* Category title */
+.category-title {
+  text-align: center;
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Card grid */
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Card styles */
+.menu-item {
+  background: #fff;
+  border-radius: 15px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.menu-item:hover {
+  transform: translateY(-5px);
+}
+
+.menu-image {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px; /* just slight rounding */
+  margin-bottom: 1rem;
+}
+
+
+.menu-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.menu-price {
+  display: inline-block;
+  background: gold;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.8rem;
+}
+
+.add-cart-btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: #e91e63;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background 0.2s;
+}
+
+.add-cart-btn:hover {
+  background: #c2185b;
+}
+
+
+
+/* Optional heart icon (if added via react-icons) */
+.menu-item .heart-icon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  color: #ccc;
+  font-size: 1.2rem;
+}
+
+/* ---------- Modal Styling ---------- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  text-align: center;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.qty-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.qty-controls button {
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #eee;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.modal-add-btn {
+  background-color: #ec1464;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  font-weight: bold;
+  border-radius: 0.8rem;
+  cursor: pointer;
+}

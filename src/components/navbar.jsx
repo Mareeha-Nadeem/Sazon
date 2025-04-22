@@ -1,13 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "./navbar.css"; // ✅ Import your external CSS file
+import "./navbar.css";
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const token = localStorage.getItem("token");
     setIsLoggedIn(loggedIn);
   }, []);
 
@@ -18,22 +20,33 @@ function Navbar() {
     navigate("/login");
   };
 
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
   return (
     <nav className="navbar">
-      <Link to="/">Home</Link>
-      <Link to="/menu">Menu</Link>
+      <div className="left">
+        <button className="hamburger" onClick={toggleMenu}>≡</button>
+        {menuOpen && (
+          <div className="side-menu">
+            <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+            <Link to="/menu" onClick={() => setMenuOpen(false)}>Menu</Link>
+            {isLoggedIn && (
+              <Link to="/cart" onClick={() => setMenuOpen(false)}>Cart</Link>
+            )}
+          </div>
+        )}
+      </div>
 
-      {!isLoggedIn ? (
-        <>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Signup</Link>
-        </>
-      ) : (
-        <>
-          <Link to="/cart">Cart</Link>
-          <button onClick={handleLogout} className="logout-btn">Logout</button>
-        </>
-      )}
+      <div className="right">
+        {!isLoggedIn ? (
+          <>
+            <Link to="/login" className="auth-btn">Login</Link>
+            <Link to="/signup" className="auth-btn">Signup</Link>
+          </>
+        ) : (
+          <button className="auth-btn" onClick={handleLogout}>Logout</button>
+        )}
+      </div>
     </nav>
   );
 }
