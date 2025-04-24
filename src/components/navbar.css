@@ -1,15 +1,18 @@
 .navbar {
-  background: transparent !important; /* fully transparent */
-  border-bottom: none !important;     /* remove white line */
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: none !important;      /* removes blur */
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
   padding: 15px 20px;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
+  z-index: 9999;
 }
-
-
 
 /* Force left and right to take full width space properly */
 .navbar .left,

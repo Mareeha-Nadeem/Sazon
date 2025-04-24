@@ -5,13 +5,21 @@ import mysql from "mysql2/promise";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import authRoutes from "./auth.js";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const port = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/images', express.static('images'));
+// app.use('/images', express.static('images'));
+app.use('/images', express.static(path.join(__dirname, '..', 'images')));
+
 
 const db = await mysql.createPool({
   host: "localhost",
@@ -63,9 +71,28 @@ app.post("/auth/login", async (req, res) => {
 
 // 🍔 MENU
 app.get('/menu', async (req, res) => {
-  const [items] = await db.execute("SELECT * FROM menu_items");
+  const [items] = await db.execute(`
+    SELECT 
+      mi.id, mi.name, mi.price, mi.description, mi.image_url,
+      c.category AS category
+    FROM menu_items mi
+    JOIN categories c ON mi.category_id = c.id
+  `);
   res.status(200).json(items);
 });
+//categoriesss
+app.get('/categories', async (req, res) => {
+  try {
+    const [categories] = await db.execute(`
+      SELECT id, category, category_image FROM categories
+    `);
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
 // 🛒 Add to Cart
 app.post('/cart', authenticate, async (req, res) => {

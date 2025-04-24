@@ -21,14 +21,14 @@ body, html, #root {
 /* Each category wrapper stays centered */
 .menu-category {
   width: 100%;
-  max-width: 1400px;
+  max-width: 2000px;
   margin-bottom: 3rem;
 }
 
 /* Category title */
 .category-title {
   text-align: center;
-  color: #fff;
+  color: #e9691e;
   font-size: 2rem;
   margin-bottom: 1.5rem;
   font-weight: bold;
@@ -85,7 +85,7 @@ body, html, #root {
 .add-cart-btn {
   display: inline-block;
   padding: 0.6rem 1.2rem;
-  background: #e91e63;
+  background: #e9691e;
   color: white;
   border: none;
   border-radius: 8px;
@@ -179,4 +179,20 @@ body, html, #root {
   font-weight: bold;
   border-radius: 0.8rem;
   cursor: pointer;
+}
+.category-banner {
+  width: 100%;
+  height: 450px; /* ya jitni chhoti chahiye */
+  object-fit: cover;
+  border-radius: 10px; /* optional: agar rounded look chahiye */
+  margin-bottom: 10px; /* optional: spacing ke liye */
+}
+
+
+.category-banner img {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+  display: block;
 }
