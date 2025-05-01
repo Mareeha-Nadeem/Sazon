@@ -1,5 +1,5 @@
 import React from "react";
-import "./modal.css";
+// import "./modal.css";
 
 const Modal = ({ item, quantity, setQuantity, onClose, onConfirm }) => {
   if (!item) return null;

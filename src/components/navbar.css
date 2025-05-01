@@ -28,17 +28,31 @@
 
 /* Hamburger styles */
 .hamburger {
-  font-size: 24px;
+  font-size: 30px;
   background: none;
   border: none;
-  color: white;
+  color: rgb(255, 255, 255);
   cursor: pointer;
+  filter: drop-shadow(0 0 10px rgb(0, 0, 0)) !important; /* ✅ Black glow */
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); /* ✅ subtle glow */
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7)); /* ✅ Black glow */
 }
+.hamburger:hover {
+  transform: scale(1.15); /* Slight zoom effect */
+  color: #ff6347; /* Lighter gray on hover */
+  background-color: #e0e0e000;
+}
+
+.hamburger:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .side-menu {
   position: absolute;
   top: 60px;
   left: 20px;
-  background-color: white;
+  background-color: rgba(243, 160, 104, 0.74);
   color: black;
   padding: 15px 20px;
   border-radius: 10px;
@@ -61,7 +75,7 @@
 }
 
 .side-menu a:hover {
-  background-color: #f2f2f2;
+  color: black;
 }
 
 /* RIGHT SECTION */
@@ -70,22 +84,32 @@
   flex: 1;
   gap: 10px;
 }
+/* Default styles (light or fallback) */
+
+
+/* When background is dark */
+
 
 /* Auth buttons */
 .auth-btn {
   background: none;
-  border: 1px solid white;
-  color: white;
+  border: none;
+ 
   padding: 5px 10px;
   border-radius: 4px;
   text-decoration: none;
   cursor: pointer;
+   /* ✅ Dynamically contrasts with background */
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7)); /* ✅ Black glow */
 }
 
 .auth-btn:hover {
-  background-color: white;
-  color: black;
+  background-color: rgba(0, 0, 0, 0.185);
+  color: rgb(255, 255, 255);
+
 }
+
 
 /* Dropdown */
 .user-dropdown {
@@ -129,3 +153,37 @@
   border-style: solid;
   border-color: transparent transparent white transparent;
 }
+.cart-icon-link {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+.cart-icon {
+  
+  transition: transform 0.3s ease;
+  font-size: 30px;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); /* ✅ subtle glow */
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7)); /* ✅ Black glow */
+}
+
+
+.cart-icon-link:hover .cart-icon {
+  transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  font-size: 10px; /* Increased badge text size */
+  padding: 1px 6px; /* Adjusted padding for a larger badge */
+  border-radius: 50%;
+  font-weight: bold;
+  box-shadow: none; /* Remove any boundary or shadow around the badge */
+}
+

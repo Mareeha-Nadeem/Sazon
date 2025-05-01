@@ -17,8 +17,11 @@ function Login() {
         password,
       });
 
+      // ─── Store token, isLoggedIn, and full user object ───────────────────
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
       alert("Login successful!");
       navigate("/");
       window.location.reload();
@@ -33,8 +36,11 @@ function Login() {
         token: credentialResponse.credential,
       });
 
+      // ─── Store token, isLoggedIn, and full user object ───────────────────
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
       alert("Google Login Successful!");
       navigate("/");
       window.location.reload();
