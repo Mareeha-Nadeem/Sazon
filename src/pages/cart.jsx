@@ -8,19 +8,31 @@ const Cart = () => {
   const [location, setLocation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem("token");
-  
-  // New state for address details
+
+  // Addresses
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [useSaved, setUseSaved] = useState(true);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+
   const [addressDetails, setAddressDetails] = useState({
-    delivery_address: "",
+    full_name: "",
+    phone_number: "",
+    street_address: "",
     city: "",
     zipcode: "",
     country: "",
     latitude: null,
-    longitude: null
+    longitude: null,
+    address_type: "Home",
   });
-  
-  // New state to control address form visibility
   const [showAddressForm, setShowAddressForm] = useState(false);
+
+  // Fetch cart & addresses & geoloc
+  useEffect(() => {
+    fetchCart();
+    fetchAddresses();
+    fetchLocation();
+  }, []);
 
   const fetchCart = async () => {
     try {
@@ -33,174 +45,141 @@ const Cart = () => {
     }
   };
 
-  const updateQty = async (id, change) => {
-    const item = items.find(i => i.id === id);
-    const newQuantity = item.quantity + change;
-
-    if (newQuantity < 1) return;
-
+  const fetchAddresses = async () => {
     try {
-      await axios.put(`http://localhost:5000/cart/${id}`, { quantity: newQuantity }, {
+      const res = await axios.get("http://localhost:5000/addresses", {
         headers: { Authorization: `Bearer ${token}` }
       });
-      fetchCart();
+      setSavedAddresses(res.data);
+      const def = res.data.find(a => a.is_default);
+      if (def) setSelectedAddressId(def.address_id);
     } catch (err) {
-      console.error("Error updating quantity:", err);
+      console.error("Error fetching addresses:", err);
     }
   };
 
-  const deleteItem = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/cart/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      fetchCart();
-      setSelected(prev => {
-        const c = { ...prev };
-        delete c[id];
-        return c;
-      });
-    } catch (err) {
-      console.error("Error deleting item:", err);
-    }
+  const fetchLocation = () => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      async pos => {
+        const { latitude, longitude } = pos.coords;
+        setAddressDetails(d => ({ ...d, latitude, longitude }));
+        try {
+          const geo = await axios.get(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+          );
+          const a = geo.data.address;
+          setLocation(a.city || a.town || "Your Area");
+          setAddressDetails(d => ({
+            ...d,
+            street_address: a.house_number
+              ? `${a.house_number} ${a.road}`
+              : a.road || "",
+            city: a.city || a.town || "",
+            zipcode: a.postcode || "",
+            country: a.country || ""
+          }));
+        } catch {
+          // ignore
+        }
+      },
+      () => {}
+    );
+  };
+
+  const updateQty = async (id, delta) => {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    const q = item.quantity + delta;
+    if (q < 1) return;
+    await axios.put(
+      `http://localhost:5000/cart/${id}`,
+      { quantity: q },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    fetchCart();
+  };
+
+  const deleteItem = async id => {
+    await axios.delete(`http://localhost:5000/cart/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    fetchCart();
+    setSelected(s => { const c = { ...s }; delete c[id]; return c; });
   };
 
   const clearCart = async () => {
-    try {
-      await axios.delete("http://localhost:5000/cart", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      fetchCart();
-      setSelected({});
-    } catch (err) {
-      console.error("Error clearing cart:", err);
-    }
-  };
-
-  const fetchLocation = async () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          const { latitude, longitude } = pos.coords;
-          
-          // Store coordinates in state
-          setAddressDetails(prev => ({
-            ...prev,
-            latitude,
-            longitude
-          }));
-          
-          try {
-            const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
-            setLocation(res.data.address.city || res.data.address.town || "Your Area");
-            
-            // Pre-fill address fields
-            const address = res.data.address;
-            setAddressDetails(prev => ({
-              ...prev,
-              delivery_address: address.road ? `${address.house_number || ''} ${address.road}`.trim() : '',
-              city: address.city || address.town || '',
-              zipcode: address.postcode || '',
-              country: address.country || ''
-            }));
-          } catch {
-            fallbackToIP();
-          }
-        },
-        () => fallbackToIP()
-      );
-    } else {
-      fallbackToIP();
-    }
-  };
-  
-  const fallbackToIP = async () => {
-    try {
-      const res = await axios.get("https://ipapi.co/json");
-      setLocation(`${res.data.city}, ${res.data.region}`);
-      
-      // Pre-fill city and country
-      setAddressDetails(prev => ({
-        ...prev,
-        city: res.data.city || '',
-        country: res.data.country_name || ''
-      }));
-    } catch {
-      setLocation("Unable to fetch location");
-    }
-  };
-
-  useEffect(() => {
+    await axios.delete("http://localhost:5000/cart", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     fetchCart();
-    fetchLocation();
-  }, []);
+    setSelected({});
+  };
 
-  const toggleSelect = (cartItemId) => {
-    setSelected(prev => ({
-      ...prev,
-      [cartItemId]: !prev[cartItemId],
-    }));
+  const toggleSelect = id => {
+    setSelected(s => ({ ...s, [id]: !s[id] }));
   };
-  
-  // Handle address form input changes
-  const handleAddressChange = (e) => {
+
+  const handleAddressChange = e => {
     const { name, value } = e.target;
-    setAddressDetails(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setAddressDetails(d => ({ ...d, [name]: value }));
   };
-  
+
+  const handleSaveAddress = async () => {
+    await axios.post(
+      "http://localhost:5000/addresses",
+      addressDetails,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    await fetchAddresses();
+    setUseSaved(true);
+  };
+
   const handleCheckout = async () => {
-    // Validate address details first
-    if (!addressDetails.delivery_address || !addressDetails.city) {
-      alert("Please provide your complete delivery address and city");
-      setShowAddressForm(true); // Force show the form
-      return;
+    const selectedItems = items
+      .filter(i => selected[i.id])
+      .map(i => ({
+        id: i.id,
+        menu_item_id: i.menu_item_id,
+        quantity: i.quantity,
+        price: i.price
+      }));
+    if (!selectedItems.length) {
+      return alert("Select at least one item.");
     }
-    
-    console.log("Sending address details:", addressDetails); // Debug log
+    if (useSaved && !selectedAddressId) {
+      return alert("Pick a saved address or add a new one.");
+    }
+    // If adding new, must have basics
+    if (!useSaved && (!addressDetails.street_address || !addressDetails.city)) {
+      setShowAddressForm(true);
+      return alert("Fill in street address & city.");
+    }
     setIsLoading(true);
-    
-    
     try {
-      const selectedItems = items
-        .filter(item => selected[item.id])
-        .map(item => ({
-          id: item.id,
-          menu_item_id: item.menu_item_id,
-          quantity: item.quantity,
-          price: item.price
-        }));
-  
-      if (selectedItems.length === 0) {
-        alert("Select at least one item to checkout.");
-        setIsLoading(false);
-        return;
-      }
-  
-      const res = await axios.post("http://localhost:5000/checkout", {
+      const payload = {
         items: selectedItems,
-        addressDetails // Send address details with the order
-      }, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      alert(`Order placed! Order ID: ${res.data.orderId}`);
+        addressId: useSaved ? selectedAddressId : null,
+        addressDetails: useSaved ? null : addressDetails
+      };
+      const res = await axios.post(
+        "http://localhost:5000/checkout",
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert(`Order placed! ID: ${res.data.orderId}`);
       fetchCart();
       setSelected({});
-      setShowAddressForm(false); // Hide the form after successful checkout
+      setShowAddressForm(false);
     } catch (err) {
-      console.error("Checkout error:", err);
-      alert("Checkout failed: " + (err.response?.data?.error || "Unknown error"));
-    } finally {
-      setIsLoading(false);
+      console.error(err);
+      alert("Checkout failed.");
     }
+    setIsLoading(false);
   };
-  
-  // Only for selected items
-  const selectedItems = items.filter(it => selected[it.id]);
-  const subtotal = selectedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  const selectedItems = items.filter(i => selected[i.id]);
+  const subtotal = selectedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const tax = subtotal * 0.13;
   const delivery = selectedItems.length ? 100 : 0;
   const total = subtotal + tax + delivery;
@@ -210,105 +189,163 @@ const Cart = () => {
       <div className="cart-container">
         <div className="cart-header">
           <h2>Your Picks</h2>
-          <button className="clear-cart-btn" onClick={clearCart}>Clear Cart</button>
+          <button onClick={clearCart}>Clear Cart</button>
         </div>
-        <div className='h3'><h3>Let's seal the deal!</h3></div>
-        <p className="location-text">Deliver to: {location} 
-          <button 
-            className="change-address-btn" 
-            onClick={() => setShowAddressForm(!showAddressForm)}
-          >
+
+        <p className="location-text">
+          Deliver to: {location}
+          <button onClick={() => setShowAddressForm(v => !v)}>
             {showAddressForm ? 'Hide Address Form' : 'Update Address'}
           </button>
         </p>
 
-        {/* Address Form */}
         {showAddressForm && (
-          <div className="address-form">
-            <h4>Delivery Address</h4>
-            <div className="form-group">
-              <label>Street Address*</label>
-              <input 
-                type="text" 
-                name="delivery_address" 
-                value={addressDetails.delivery_address} 
-                onChange={handleAddressChange}
-                placeholder="House/Apt No., Street Name" 
-                required
-              />
+          <div className="address-section">
+            {/* Toggle */}
+            <div className="address-toggle">
+              <label>
+                <input
+                  type="radio"
+                  checked={useSaved}
+                  onChange={() => setUseSaved(true)}
+                /> Use saved
+              </label>
+              <label style={{ marginLeft: '1rem' }}>
+                <input
+                  type="radio"
+                  checked={!useSaved}
+                  onChange={() => setUseSaved(false)}
+                /> Add new
+              </label>
             </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>City*</label>
-                <input 
-                  type="text" 
-                  name="city" 
-                  value={addressDetails.city} 
-                  onChange={handleAddressChange}
-                  placeholder="City" 
-                  required
-                />
+
+            {useSaved ? (
+              <div className="saved-addresses">
+                {savedAddresses.map(a => (
+                  <div key={a.address_id} className="saved-address-item">
+                    <input
+                      type="radio"
+                      name="savedAddress"
+                      checked={selectedAddressId === a.address_id}
+                      onChange={() => setSelectedAddressId(a.address_id)}
+                    />
+                    <span>
+                      {a.full_name}, {a.street_address}, {a.city}
+                      {a.is_default && <strong> (Default)</strong>}
+                    </span>
+                    {!a.is_default && (
+                      <button
+                        className="set-default-btn"
+                        onClick={async () => {
+                          await axios.patch(
+                            `http://localhost:5000/addresses/${a.address_id}/default`,
+                            {},
+                            { headers: { Authorization: `Bearer ${token}` } }
+                          );
+                          await fetchAddresses();
+                          setSelectedAddressId(a.address_id);
+                        }}
+                      >
+                        Set Default
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
-              <div className="form-group">
-                <label>Zip/Postal Code</label>
-                <input 
-                  type="text" 
-                  name="zipcode" 
-                  value={addressDetails.zipcode} 
-                  onChange={handleAddressChange}
-                  placeholder="Zip/Postal Code"
-                />
+            ) : (
+              <div className="address-form">
+                <h4>New Address</h4>
+                <div className="form-group">
+                  <label>Full Name</label>
+                  <input
+                    name="full_name"
+                    value={addressDetails.full_name}
+                    onChange={handleAddressChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Phone</label>
+                  <input
+                    name="phone_number"
+                    value={addressDetails.phone_number}
+                    onChange={handleAddressChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Street*</label>
+                  <input
+                    name="street_address"
+                    value={addressDetails.street_address}
+                    onChange={handleAddressChange}
+                  />
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>City*</label>
+                    <input
+                      name="city"
+                      value={addressDetails.city}
+                      onChange={handleAddressChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Zip</label>
+                    <input
+                      name="zipcode"
+                      value={addressDetails.zipcode}
+                      onChange={handleAddressChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Country</label>
+                  <input
+                    name="country"
+                    value={addressDetails.country}
+                    onChange={handleAddressChange}
+                  />
+                </div>
+                <button onClick={handleSaveAddress}>Save Address</button>
               </div>
-            </div>
-            <div className="form-group">
-              <label>Country</label>
-              <input 
-                type="text" 
-                name="country" 
-                value={addressDetails.country} 
-                onChange={handleAddressChange}
-                placeholder="Country"
-              />
-            </div>
+            )}
           </div>
         )}
 
         {items.length === 0 ? (
-          <p className="empty-cart">Your cart is empty.</p>
+          <p>Your cart is empty.</p>
         ) : (
           <>
-            {items.map(item => (
-              <div className="cart-item" key={item.id}>
-                <input 
-                  type="checkbox" 
-                  checked={!!selected[item.id]} 
-                  onChange={() => toggleSelect(item.id)}
+            {items.map(i => (
+              <div key={i.id} className="cart-item">
+                <input
+                  type="checkbox"
+                  checked={!!selected[i.id]}
+                  onChange={() => toggleSelect(i.id)}
                 />
-                <img src={item.image_url} alt={item.name} />
+                <img src={i.image_url} alt={i.name} />
                 <div className="item-info">
-                  <h3>{item.name}</h3>
+                  <h3>{i.name}</h3>
                   <div className="quantity-controls">
-                    <button onClick={() => updateQty(item.id, -1)}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => updateQty(item.id, 1)}>+</button>
+                    <button onClick={() => updateQty(i.id, -1)}>-</button>
+                    <span>{i.quantity}</span>
+                    <button onClick={() => updateQty(i.id, 1)}>+</button>
                   </div>
                 </div>
                 <div className="item-meta">
-                  <p>Rs. {item.price * item.quantity}</p>
-                  <button className="delete-btn" onClick={() => deleteItem(item.id)}>×</button>
+                  <p>Rs. {i.price * i.quantity}</p>
+                  <button onClick={() => deleteItem(i.id)}>×</button>
                 </div>
               </div>
             ))}
 
             <div className="summary">
-              <div className="row"><span>Subtotal</span><span>Rs. {subtotal.toFixed(0)}</span></div>
-              <div className="row"><span>Tax (13%)</span><span>Rs. {tax.toFixed(0)}</span></div>
-              <div className="row"><span>Delivery</span><span>Rs. {delivery}</span></div>
-              <div className="row total"><strong>Total</strong><strong>Rs. {total.toFixed(0)}</strong></div>
-              <button 
-                className="checkout-btn" 
+              <div><span>Subtotal</span><span>Rs. {subtotal.toFixed(0)}</span></div>
+              <div><span>Tax (13%)</span><span>Rs. {tax.toFixed(0)}</span></div>
+              <div><span>Delivery</span><span>Rs. {delivery}</span></div>
+              <div className="total"><strong>Total</strong><strong>Rs. {total.toFixed(0)}</strong></div>
+              <button
                 onClick={handleCheckout}
-                disabled={!selectedItems.length || isLoading || (!addressDetails.delivery_address && !addressDetails.city)}
+                disabled={!selectedItems.length || isLoading}
               >
                 {isLoading ? "Processing..." : "Proceed to Checkout"}
               </button>

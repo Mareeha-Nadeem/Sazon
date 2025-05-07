@@ -186,6 +186,112 @@ app.delete('/cart', authenticate, async (req, res) => {
 // 🛒 Checkout endpoint - Fixed version
 // 🛒 Checkout endpoint - Updated version with address details
 
+
+
+
+// 🚚 Get all saved addresses for the logged-in user
+// 🚚 Get all saved addresses for the logged-in user
+app.get('/addresses', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const [rows] = await db.execute(
+      `SELECT 
+         address_id, full_name, phone_number, street_address, city,
+         postal_code, country, address_type, is_default, created_at
+       FROM addresses
+       WHERE user_id = ?
+       ORDER BY is_default DESC, created_at DESC`,
+      [userId]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching addresses:", err);
+    res.status(500).json({ message: "Failed to fetch addresses" });
+  }
+});
+
+
+// 📝 Save a new address
+// 📝 Save a new address
+app.post('/addresses', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // pull everything out and replace undefined → null (or your default)
+    const full_name     = req.body.full_name     ?? req.user.name;
+    const phone_number  = req.body.phone_number  ?? null;
+    const street_address= req.body.street_address?? null;
+    const city          = req.body.city          ?? null;
+    const postal_code   = req.body.postal_code   ?? null;
+    const country       = req.body.country       ?? null;
+    const latitude      = req.body.latitude      ?? null;
+    const longitude     = req.body.longitude     ?? null;
+    const address_type  = req.body.address_type  ?? 'Home';
+
+    // first address gets marked default
+    const [[{ count }]] = await db.execute(
+      `SELECT COUNT(*) AS count FROM addresses WHERE user_id = ?`,
+      [userId]
+    );
+    const is_default = count === 0 ? 1 : 0;
+
+    const [result] = await db.execute(
+      `INSERT INTO addresses 
+         (user_id, full_name, phone_number, street_address, city, postal_code, country, latitude, longitude, address_type, is_default)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        userId, full_name, phone_number, street_address,
+        city, postal_code, country, latitude, longitude,
+        address_type, is_default
+      ]
+    );
+
+    res.status(201).json({ message: "Address saved", address_id: result.insertId });
+  } catch (err) {
+    console.error("Error saving address:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// 🔄 Set an address as default
+app.patch('/addresses/:id/default', authenticate, async (req, res) => {
+  const userId = req.user.id;
+  const addressId = req.params.id;
+
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    // 1) Unset any existing default
+    await conn.execute(
+      `UPDATE addresses 
+         SET is_default = FALSE 
+       WHERE user_id = ? AND is_default = TRUE`,
+      [userId]
+    );
+
+    // 2) Set the chosen one as default
+    const [result] = await conn.execute(
+      `UPDATE addresses 
+         SET is_default = TRUE 
+       WHERE address_id = ? AND user_id = ?`,
+      [addressId, userId]
+    );
+
+    if (result.affectedRows === 0) {
+      throw new Error("Address not found or you’re not the owner");
+    }
+
+    await conn.commit();
+    res.json({ message: "Default address updated" });
+  } catch (err) {
+    await conn.rollback();
+    console.error("Error setting default:", err);
+    res.status(500).json({ message: err.message || "Failed to set default" });
+  } finally {
+    conn.release();
+  }
+});
 app.post('/checkout', authenticate, async (req, res) => {
   const userId = req.user.id;
   const { items, addressDetails } = req.body;
