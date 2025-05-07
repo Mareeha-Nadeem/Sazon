@@ -17,9 +17,7 @@ const port = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
-// app.use('/images', express.static('images'));
 app.use('/images', express.static(path.join(__dirname, '..', 'images')));
-
 
 const db = await mysql.createPool({
   host: "localhost",
@@ -29,8 +27,6 @@ const db = await mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
 });
-
-console.log("✅ Connected to MySQL Database");
 
 app.use("/auth", authRoutes);
 
@@ -59,7 +55,6 @@ app.post("/auth/login", async (req, res) => {
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) return res.status(401).json({ message: "Invalid password" });
 
-  // 👇 JWT includes name
   const token = jwt.sign(
     { id: user.id, email: user.email, name: user.name },
     "secretkey",
@@ -80,6 +75,7 @@ app.get('/menu', async (req, res) => {
   `);
   res.status(200).json(items);
 });
+
 //categoriesss
 app.get('/categories', async (req, res) => {
   try {
@@ -92,7 +88,6 @@ app.get('/categories', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
-
 
 // 🛒 Add to Cart
 app.post('/cart', authenticate, async (req, res) => {
@@ -129,13 +124,14 @@ app.get('/cart', authenticate, async (req, res) => {
   const userId = req.user.id;
   try {
     const [items] = await db.execute(`
-      SELECT ci.id, ci.quantity, mi.name, mi.price, mi.image_url 
-      FROM cart_items ci 
+      SELECT ci.id, ci.quantity, mi.id AS menu_item_id, mi.name, mi.price, mi.image_url
+      FROM cart_items ci
       JOIN menu_items mi ON ci.menu_item_id = mi.id 
       WHERE ci.user_id = ?
     `, [userId]);
     res.json(items);
-  } catch {
+  } catch (err) {
+    console.error("Error fetching cart:", err);
     res.status(500).json({ message: "Failed to fetch cart" });
   }
 });
@@ -187,6 +183,124 @@ app.delete('/cart', authenticate, async (req, res) => {
   }
 });
 
+// 🛒 Checkout endpoint - Fixed version
+// 🛒 Checkout endpoint - Updated version with address details
+
+app.post('/checkout', authenticate, async (req, res) => {
+  const userId = req.user.id;
+  const { items, addressDetails } = req.body;
+
+  console.log("Received address details:", addressDetails); // Debug log
+
+  if (!items || !items.length) {
+    return res.status(400).json({ message: "No items selected" });
+  }
+
+  // Improved validation with better error message
+  if (!addressDetails) {
+    return res.status(400).json({ message: "Address details are missing" });
+  }
+  
+  if (!addressDetails.delivery_address) {
+    return res.status(400).json({ message: "Delivery address is required" });
+  }
+  
+  if (!addressDetails.city) {
+    return res.status(400).json({ message: "City is required" });
+  }
+
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+    
+    // Calculate total price server-side
+    let total = 0;
+    for (const item of items) {
+      total += item.price * item.quantity;
+    }
+    
+    // Ensure empty strings are converted to NULL for database
+    const address = addressDetails.delivery_address.trim();
+    const city = addressDetails.city.trim();
+    const zipcode = addressDetails.zipcode?.trim() || null;
+    const country = addressDetails.country?.trim() || null;
+    const latitude = addressDetails.latitude || null;
+    const longitude = addressDetails.longitude || null;
+    
+    console.log("Inserting address:", address, city, zipcode, country); // Debug log
+    
+    // 1) Insert order with address details - simplified query with named parameters
+    const orderQuery = `
+      INSERT INTO orders (
+        user_id, 
+        total_price, 
+        delivery_address, 
+        city, 
+        zipcode, 
+        country, 
+        latitude, 
+        longitude
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    const [orderRes] = await conn.execute(
+      orderQuery, 
+      [
+        userId, 
+        total, 
+        address,
+        city,
+        zipcode,
+        country,
+        latitude,
+        longitude
+      ]
+    );
+    
+    const orderId = orderRes.insertId;
+    
+    // 2) Insert order_items
+    for (const item of items) {
+      await conn.execute(
+        'INSERT INTO order_items (order_id, menu_item_id, quantity, price) VALUES (?, ?, ?, ?)',
+        [orderId, item.menu_item_id, item.quantity, item.price]
+      );
+    }
+    
+    // 3) Remove selected items from cart_items
+    for (const item of items) {
+      if (item.id) {
+        await conn.execute(
+          'DELETE FROM cart_items WHERE id = ? AND user_id = ?',
+          [item.id, userId]
+        );
+      }
+    }
+    
+    await conn.commit();
+    
+    // Return more details in response
+    res.status(200).json({ 
+      message: "Order placed!", 
+      orderId,
+      delivery_details: {
+        address: address,
+        city: city,
+        zipcode: zipcode,
+        country: country
+      }
+    });
+  } catch (err) {
+    await conn.rollback();
+    console.error("Checkout error:", err);
+    res.status(500).json({ message: "Checkout failed", error: err.message });
+  } finally {
+    conn.release();
+  }
+});
+
 app.listen(port, () => {
-  console.log(`🚀 Server running at http://localhost:${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
+}).on('error', (err) => {
+  console.error('Error starting server:', err);
 });

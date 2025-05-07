@@ -96,7 +96,7 @@ body, html, #root {
 }
 
 .add-cart-btn:hover {
-  background: #c2185b;
+  background: #791a02dc;
 }
 
 
@@ -133,6 +133,7 @@ body, html, #root {
   width: 90%;
   position: relative;
   text-align: center;
+  color:red;
 }
 
 .modal-close {
@@ -165,14 +166,14 @@ body, html, #root {
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
   font-weight: bold;
-  background-color: #eee;
+  background-color: #f1601c;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
 }
 
 .modal-add-btn {
-  background-color: #ec1464;
+  color: #e9691e;;
   color: white;
   border: none;
   padding: 0.7rem 1.2rem;

@@ -52,14 +52,15 @@ function Login() {
   return (
     <div className="login-page">
       <div className="login-form-container">
-        <div className="login-heading">
-          <h2>Login to</h2>
-          <img
-            src="sazon logo txt.png"
-            alt="Sazon Logo"
-            className="logo-image"
-          />
-        </div>
+      <div className="login-heading">
+  <h2 className="login-text">Login to</h2>
+  <img
+    src="sazon logo txt.png"
+    alt="Sazon Logo"
+    className="logo-image"
+  />
+</div>
+
 
         <form onSubmit={handleSubmit}>
           <div className="input-group">

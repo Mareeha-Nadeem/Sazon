@@ -1,134 +1,300 @@
+
 .cart-wrapper {
-  width: 100%;
-  background: #f9f9f9;
-  padding: 30px;
+  position: relative;
   min-height: 100vh;
+  padding: 20px;
+  background-color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
 }
 
+/* .bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+} */
+
+/* Glass Morphism Card */
 .cart-container {
-  max-width: 700px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: auto;
+  background: rgb(255, 254, 254);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.3);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
+/* Header */
 .cart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 0px;
 }
 
 .cart-header h2 {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #c44206;
 }
 
+.h3 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #d3a203;
+  text-align: left;
+  margin-top: 0;
+  margin-left: 0 !important;     /* remove auto margin */
+  padding-left: 0; /* remove padding */
+  margin-right: 120px; /* push it left */
+}
+
+
+
+/* Clear Cart Button */
 .clear-cart-btn {
-  background: none;
-  color: #e91e63;
-  font-weight: bold;
+  background-color: rgb(227, 112, 4);
+  color:white ;
   border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.location {
+.clear-cart-btn:hover {
+  background-color: #ffbc05;
+}
+
+/* Location Text */
+.location-text {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: italic;
+  text-align: left;
   margin-bottom: 20px;
-  color: #666;
-  font-size: 14px;
+  color: #710505d7;
 }
 
+/* Empty Cart */
+.empty-cart {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Cart Item */
 .cart-item {
   display: flex;
-  gap: 15px;
   align-items: center;
-  border-top: 1px solid #eee;
-  padding: 16px 0;
+  color:black;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  font-size: small;
 }
 
 .cart-item img {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
 }
 
-.item-info h4 {
+.item-info h3 {
   margin: 0;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 600;
 }
 
-.qty-row {
+.item-meta{
+
+  color:#c77878;
+}
+/* Quantity Controls */
+.quantity-controls {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-top: 8px;
 }
 
-.qty-row button {
-  background: #e91e63;
+.quantity-controls button {
+  background-color: rgb(227, 112, 4);
+  color: #fff;
   border: none;
-  color: white;
-  width: 28px;
-  height: 28px;
-  font-weight: bold;
-  font-size: 16px;
+  padding: 6px 12px;
   border-radius: 6px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.qty-row span {
-  font-weight: bold;
-  width: 24px;
-  text-align: center;
+.quantity-controls button:hover {
+  background-color: #a60c0c;
 }
 
+.quantity-controls span {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Meta Info */
 .item-meta {
   margin-left: auto;
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .item-meta p {
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 5px 0;
 }
 
+/* Delete Button */
 .delete-btn {
-  background: none;
+  background-color: rgb(209, 6, 6);
+  color: #fff;
   border: none;
-  color: #333;
-  font-size: 18px;
+  border-radius: 6px;
+  padding: 6px 10px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 6px;
 }
 
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Summary Section */
 .summary {
   margin-top: 30px;
-  border-top: 1px solid #ddd;
-  padding-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #ff1b1b;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  color:#000000;
 }
 
-.total {
+.row span {
   font-size: 16px;
-  font-weight: bold;
-  color: #333;
+  font-weight: 500;
+  color: #000000;
 }
 
+.total strong {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Checkout Button */
 .checkout-btn {
   width: 100%;
-  background: #e91e63;
+  background-color: rgb(227, 112, 4);
   color: white;
   padding: 12px;
   border: none;
   border-radius: 8px;
-  margin-top: 20px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #c99507;
+}
+/* Add these styles to your existing cart.css file */
+
+.change-address-btn {
+  margin-left: 10px;
+  padding: 2px 8px;
+  background-color: #d04848;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.change-address-btn:hover {
+  background-color: #e14141;
+}
+.address-form {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(255, 91, 54, 0.15);
+  transition: all 0.3s ease-in-out;
+}
+
+.address-form:hover {
+  box-shadow: 0 12px 24px rgba(255, 91, 54, 0.3);
+}
+
+.address-form h4 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  color: #ff5b36;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  flex: 1 1 45%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.6rem;
+  font-size: 0.95rem;
+  background-color: #fff;
+  transition: 0.2s all ease-in-out;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #ff5b36;
+  box-shadow: 0 0 0 3px rgba(255, 91, 54, 0.2);
 }

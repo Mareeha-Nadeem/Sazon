@@ -25,7 +25,7 @@
 }
 
 h2 {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     font-size: 24px;
     color: #333;
 }
@@ -77,7 +77,7 @@ button:hover {
     top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #f0f0f0;
+    background-color: #f0f0f093;
     color: black;
     padding: 0 10px;
 }
@@ -88,12 +88,19 @@ p {
 }
 .login-heading {
     display: flex;
-    flex-direction: column;
     align-items: center;
     
-}
-
-.logo-image {
-    height: 34px; /* size adjust kar le apni marzi se */
-    
-}   
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  .login-text {
+    font-size: 24px;
+    font-weight: 700;
+  }
+  
+  .logo-image {
+    height: 34px;
+    margin-bottom: 1.7cap;
+  }
+  

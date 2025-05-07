@@ -7,7 +7,7 @@ const db = await mysql.createPool({
   password: 'M@reeh@123',
   database: 'sazon_db',
   waitForConnections: true,
-  connectionLimit: 10,  // Prevent too many open connections
+  connectionLimit: 100,  // Prevent too many open connections
   queueLimit: 0
 });
 
