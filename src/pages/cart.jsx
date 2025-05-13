@@ -317,6 +317,7 @@ const Cart = () => {
           <>
             {items.map(i => (
               <div key={i.id} className="cart-item">
+                
                 <input
                   type="checkbox"
                   checked={!!selected[i.id]}

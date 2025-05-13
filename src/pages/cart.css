@@ -59,8 +59,8 @@
 }
 
 
-
-/* Clear Cart Button */
+/* 
+/* Clear Cart Button 
 .clear-cart-btn {
   background-color: rgb(227, 112, 4);
   color:white ;
@@ -74,6 +74,51 @@
 
 .clear-cart-btn:hover {
   background-color: #ffbc05;
+}
+
+.update-address-btn{
+  background-color: rgb(227, 112, 4);
+  color:white ;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  align-content:right;
+
+}
+
+
+
+
+
+
+ */
+clear-cart-btn {
+  background-color: rgb(227, 112, 4);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clear-cart-btn:hover {
+  background-color: #ffbc05;
+}
+
+.update-address-btn {
+  background-color: rgb(227, 112, 4);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 /* Location Text */
@@ -183,10 +228,22 @@
 
 /* Summary Section */
 .summary {
-  margin-top: 30px;
+  font-size: 22px;
+  margin-top: 80px;
+  margin-bottom:80px;
   padding-top: 15px;
   border-top: 1px solid #ff1b1b;
+  color:#a60c0c;
 }
+
+.summary button {
+  margin-top: 2rem; /* or any space you prefer */
+}
+
+.total {
+  font-size:30px; /* Or any size you prefer */
+}
+
 
 .row {
   display: flex;
@@ -297,4 +354,55 @@
   outline: none;
   border-color: #ff5b36;
   box-shadow: 0 0 0 3px rgba(255, 91, 54, 0.2);
+}
+
+/*this is checkout button*/
+.custom-checkbox {
+  display: inline-block;
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-checkbox .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  border-radius: 4px;
+  border: 2px solid #00b894; /* Your theme color */
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: #00b894;
+}
+
+.custom-checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.custom-checkbox .checkmark:after {
+  left: 6px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
