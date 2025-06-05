@@ -1,17 +1,20 @@
 .navbar {
-  background: transparent !important;
-  background-color: transparent !important;
-  backdrop-filter: none !important;      /* removes blur */
-  -webkit-backdrop-filter: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 15px 20px;
-  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
   z-index: 9999;
+  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.315) !important; /* almost fully transparent */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  border-bottom: 1px solid rgba(255, 99, 71, 0.08); /* subtle orange tint */
+  
 }
 
 /* Force left and right to take full width space properly */
@@ -161,12 +164,12 @@
 .cart-icon {
   
   transition: transform 0.3s ease;
-  font-size: 30px;
+  font-size: 20px;
   border: none;
   padding: 0;
   border-radius: 0;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); /* ✅ subtle glow */
-  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7)); /* ✅ Black glow */
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
 }
 
 
@@ -185,5 +188,132 @@
   border-radius: 50%;
   font-weight: bold;
   box-shadow: none; /* Remove any boundary or shadow around the badge */
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.nav-icon {
+  transition: transform 0.3s ease;
+  font-size: 20px;
+}
+
+.nav-link:hover .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.auth-btn {
+  background: none;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
+}
+
+.auth-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.cart-icon-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  height: 40px;
+}
+
+.cart-icon {
+  transition: transform 0.3s ease;
+  font-size: 20px;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
+}
+
+.cart-icon-link:hover .cart-icon {
+  transform: scale(1.1);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff4500;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 16px;
+  }
+
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .nav-link span {
+    display: none;
+  }
+
+  .nav-icon {
+    margin: 0;
+  }
+
+  .auth-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
 }
 

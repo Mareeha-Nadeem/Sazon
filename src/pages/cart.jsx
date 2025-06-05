@@ -135,48 +135,78 @@ const Cart = () => {
     setUseSaved(true);
   };
 
-  const handleCheckout = async () => {
-    const selectedItems = items
-      .filter(i => selected[i.id])
-      .map(i => ({
-        id: i.id,
-        menu_item_id: i.menu_item_id,
-        quantity: i.quantity,
-        price: i.price
-      }));
-    if (!selectedItems.length) {
-      return alert("Select at least one item.");
+const handleCheckout = async () => {
+  const selectedItems = items
+    .filter(i => selected[i.id])
+    .map(i => ({
+      id: i.id,
+      menu_item_id: i.menu_item_id,
+      quantity: i.quantity,
+      price: i.price
+    }));
+    
+  if (!selectedItems.length) {
+    return alert("Select at least one item.");
+  }
+  
+  let checkoutAddressDetails;
+  
+  if (useSaved) {
+    // Find the selected address from saved addresses
+    const selectedAddress = savedAddresses.find(addr => addr.address_id === selectedAddressId);
+    if (!selectedAddress) {
+      return alert("Please select a delivery address.");
     }
-    if (useSaved && !selectedAddressId) {
-      return alert("Pick a saved address or add a new one.");
-    }
-    // If adding new, must have basics
-    if (!useSaved && (!addressDetails.street_address || !addressDetails.city)) {
+    
+    // Map saved address to expected format
+    checkoutAddressDetails = {
+      delivery_address: selectedAddress.street_address,
+      city: selectedAddress.city,
+      zipcode: selectedAddress.zipcode,
+      country: selectedAddress.country,
+      latitude: selectedAddress.latitude,
+      longitude: selectedAddress.longitude
+    };
+  } else {
+    // Format new address details to match backend expectations
+    if (!addressDetails.street_address || !addressDetails.city) {
       setShowAddressForm(true);
       return alert("Fill in street address & city.");
     }
-    setIsLoading(true);
-    try {
-      const payload = {
-        items: selectedItems,
-        addressId: useSaved ? selectedAddressId : null,
-        addressDetails: useSaved ? null : addressDetails
-      };
-      const res = await axios.post(
-        "http://localhost:5000/checkout",
-        payload,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      alert(`Order placed! ID: ${res.data.orderId}`);
-      fetchCart();
-      setSelected({});
-      setShowAddressForm(false);
-    } catch (err) {
-      console.error(err);
-      alert("Checkout failed.");
-    }
-    setIsLoading(false);
-  };
+    
+    checkoutAddressDetails = {
+      delivery_address: addressDetails.street_address,
+      city: addressDetails.city,
+      zipcode: addressDetails.zipcode,
+      country: addressDetails.country,
+      latitude: addressDetails.latitude,
+      longitude: addressDetails.longitude
+    };
+  }
+  
+  setIsLoading(true);
+  try {
+    const payload = {
+      items: selectedItems,
+      addressDetails: checkoutAddressDetails
+    };
+    
+    const res = await axios.post(
+      "http://localhost:5000/checkout",
+      payload,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    
+    alert(`Order placed! ID: ${res.data.orderId}`);
+    fetchCart();
+    setSelected({});
+    setShowAddressForm(false);
+  } catch (err) {
+    console.error("Checkout error:", err.response?.data || err);
+    alert(err.response?.data?.message || "Checkout failed.");
+  }
+  setIsLoading(false);
+};
 
   const selectedItems = items.filter(i => selected[i.id]);
   const subtotal = selectedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);

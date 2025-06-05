@@ -1,12 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaShoppingCart } from "react-icons/fa"; // ✅ Import cart icon
+import { FaShoppingCart, FaHome, FaUtensils, FaCompass } from "react-icons/fa";
 import "./navbar.css";
-
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
@@ -18,11 +16,7 @@ function Navbar() {
     if (token) {
       fetchCartCount(token);
     }
-  
-    // ✅ Apply theme when Navbar mounts
-     // or "body" or any element with visible bg
   }, []);
-  
 
   const fetchCartCount = async (token) => {
     try {
@@ -46,35 +40,37 @@ function Navbar() {
     navigate("/login");
   };
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
   return (
-    <nav className="navbar">
-      <div className="left">
-        <button className="hamburger" onClick={toggleMenu}>≡</button>
-        {menuOpen && (
-          <div className="side-menu">
-            <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
-            <Link to="/menu" onClick={() => setMenuOpen(false)}>Menu</Link>
-          </div>
+    <nav className="navbar" aria-label="Main Navigation">
+      <div className="nav-links">
+        <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="Home" tabIndex={0} end>
+          <FaHome className="nav-icon" /> <span>Home</span>
+        </NavLink>
+        <NavLink to="/menu" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="Menu" tabIndex={0}>
+          <FaUtensils className="nav-icon" /> <span>Menu</span>
+        </NavLink>
+        {isLoggedIn && (
+          <NavLink to="/explore" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-label="Explore" tabIndex={0}>
+            <FaCompass className="nav-icon" /> <span>Explore</span>
+          </NavLink>
         )}
       </div>
 
-      <div className="right">
+      <div className="nav-auth">
+        {isLoggedIn && (
+          <NavLink to="/cart" className="auth-btn cart-icon-link" aria-label="Cart" tabIndex={0}>
+            <FaShoppingCart className="cart-icon" />
+            {cartCount > 0 && (
+              <span className="cart-badge">{cartCount}</span>
+            )}
+          </NavLink>
+        )}
         {isLoggedIn ? (
-          <>
-            <Link to="/cart" className="auth-btn cart-icon-link" title="Cart">
-              <FaShoppingCart size={24} className="cart-icon" />
-              {cartCount > 0 && (
-                <span className="cart-badge">{cartCount}</span>
-              )}
-            </Link>
-            <button className="auth-btn" onClick={handleLogout}>Logout</button>
-          </>
+          <button className="auth-btn" onClick={handleLogout} aria-label="Logout" tabIndex={0}>Logout</button>
         ) : (
           <>
-            <Link to="/login" className="auth-btn">Login</Link>
-            <Link to="/signup" className="auth-btn">Signup</Link>
+            <NavLink to="/login" className="auth-btn" aria-label="Login" tabIndex={0}>Login</NavLink>
+            <NavLink to="/signup" className="auth-btn" aria-label="Signup" tabIndex={0}>Signup</NavLink>
           </>
         )}
       </div>

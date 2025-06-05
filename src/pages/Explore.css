@@ -1,0 +1,852 @@
+/* Container styles */
+.explore-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FFF5F0 0%, #FFF8F3 50%, #FFF5F0 100%);
+  padding-top: 80px; /* Account for navbar */
+}
+
+.explore-content {
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Masonry Grid */
+.my-masonry-grid {
+  display: flex;
+  margin-left: -24px;
+  width: auto;
+}
+
+.my-masonry-grid_column {
+  padding-left: 24px;
+  background-clip: padding-box;
+}
+
+/* Optional: Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+
+/* Style all masonry items */
+.my-masonry-grid_column > div {
+  margin-bottom: 24px;
+  break-inside: avoid;
+}
+
+/* Card styles */
+.explore-card {
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.explore-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Featured card specific styles */
+.featured-card {
+  grid-column: span 2;
+}
+
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* Header section */
+.header-section {
+  max-width: 800px;
+  margin-left: 24px;
+}
+
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #1a1a1a;
+  text-align: left;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F6B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.page-tagline {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.6;
+  max-width: 42rem;
+  color: #374151;
+  text-align: left;
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F6B 100%);
+  color: white;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.2);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: white;
+  color: #FF6B35;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 107, 53, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Card Specific Styles */
+.trivia-card {
+  background: linear-gradient(135deg, #FFF7E6 0%, #FFF0D6 100%);
+  padding: 1.75rem;
+}
+
+.food-hack-card {
+  background: linear-gradient(135deg, #E8F6EF 0%, #D4F1E4 100%);
+  padding: 1.75rem;
+}
+
+.poll-card {
+  background: linear-gradient(135deg, #FDEDED 0%, #FCE4E4 100%);
+  padding: 1.75rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, #FDF3E7 0%, #FCE8D6 100%);
+  padding: 1.75rem;
+}
+
+/* Progress Bars */
+.progress-bar {
+  height: 0.25rem;
+  background: rgba(255, 107, 53, 0.1);
+  border-radius: 0.125rem;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FF6B35 0%, #FF8F6B 100%);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover Effects */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 12px 24px -8px rgba(0, 0, 0, 0.12),
+    0 8px 16px -6px rgba(0, 0, 0, 0.08);
+}
+
+/* Animation Classes */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Grid Spans */
+.span-2 {
+  grid-column: span 2;
+}
+
+.span-2-rows {
+  grid-row: span 2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1536px) {
+  .explore-content {
+    padding: 0 20px;
+  }
+  
+  .my-masonry-grid {
+    margin-left: -20px;
+  }
+  
+  .my-masonry-grid_column {
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .explore-content {
+    padding: 0 16px;
+  }
+  
+  .my-masonry-grid {
+    margin-left: -16px;
+  }
+  
+  .my-masonry-grid_column {
+    padding-left: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .explore-container {
+    padding-top: 60px;
+  }
+  
+  .explore-content {
+    padding: 0 12px;
+  }
+  
+  .my-masonry-grid {
+    margin-left: -12px;
+  }
+  
+  .my-masonry-grid_column {
+    padding-left: 12px;
+  }
+  
+  .explore-card {
+    margin-bottom: 16px;
+  }
+  
+  .header-section {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+}
+
+/* Page Title Styles */
+.explore-page h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #2D3748;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.explore-page p {
+  font-size: 1.25rem;
+  color: #4A5568;
+  line-height: 1.6;
+}
+
+/* Card Content Spacing */
+.card-base > * {
+  margin-bottom: 1rem;
+}
+
+.card-base > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Image Containers */
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover .card-image {
+  transform: scale(1.05);
+}
+
+/* Interactive Elements */
+.interactive-element {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-element:hover {
+  color: #FF6B35;
+}
+
+/* Decorative Elements */
+.decorative-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.05;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(circle at 20% 20%, #FF6B35 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #FE9C5A 0%, transparent 50%);
+}
+
+/* Base card styles */
+.card-inner {
+  padding: 28px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Card header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.icon-wrapper {
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+}
+
+/* Image styles */
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+.card-inner:hover .card-image {
+  transform: scale(1.05);
+}
+
+/* Card content */
+.card-content {
+  padding: 20px 0;
+}
+
+.card-description {
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Poll card specific */
+.poll-question {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+}
+
+.poll-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.poll-option {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease;
+}
+
+.poll-option::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease;
+}
+
+.poll-option:hover {
+  transform: translateY(-2px);
+}
+
+.poll-option:hover::before {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.poll-option-text {
+  position: relative;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  display: block;
+}
+
+.poll-results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.poll-result-item {
+  animation: slideIn 0.5s ease forwards;
+}
+
+.poll-result-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.percentage {
+  font-weight: 600;
+  color: #2b6cb0;
+}
+
+.progress-bar {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3182ce 0%, #63b3ed 100%);
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Feature card specific */
+.feature-card-inner {
+  position: relative;
+  height: 100%;
+  min-height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.feature-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.feature-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.feature-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.4) 30%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  z-index: 1;
+}
+
+.feature-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 32px;
+  color: white;
+  z-index: 2;
+}
+
+.feature-text-content {
+  max-width: 600px;
+}
+
+.feature-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.feature-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.feature-description {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.feature-meta {
+  display: flex;
+  gap: 24px;
+  font-size: 0.875rem;
+  color: white;
+}
+
+.feature-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+
+/* Comparison card specific */
+.comparison-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+
+.comparison-subtitle {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.125rem;
+  color: #374151;
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+
+.comparison-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comparison-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.comparison-item:hover {
+  transform: translateX(8px);
+}
+
+.comparison-image-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.comparison-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comparison-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+  font-size: 1.125rem;
+}
+
+.comparison-desc {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.875rem;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hover effects */
+.explore-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.explore-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Quote card specific */
+.quote-content {
+  text-align: center;
+  padding: 32px 16px;
+  position: relative;
+}
+
+.quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.quote-author {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* Trivia card specific */
+.trivia-content {
+  padding: 16px 0;
+}
+
+.trivia-question {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.trivia-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.trivia-option {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 500;
+  color: #1a1a1a;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.trivia-option:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateX(8px);
+}
+
+.show-answer-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.show-answer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(237, 137, 54, 0.2);
+}
+
+.answer-reveal {
+  animation: slideIn 0.5s ease forwards;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.answer-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  color: #065f46;
+  margin-bottom: 10px;
+  font-size: 1.125rem;
+}
+
+.answer-explanation {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+/* Food Hack specific */
+.hack-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.hack-description {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.hack-tip {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+/* Responsive adjustments for feature card */
+@media (max-width: 1280px) {
+  .feature-card-inner {
+    min-height: 400px;
+  }
+
+  .feature-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .feature-card-inner {
+    min-height: 360px;
+  }
+
+  .feature-content {
+    padding: 24px;
+  }
+
+  .feature-title {
+    font-size: 1.75rem;
+  }
+
+  .feature-description {
+    font-size: 1rem;
+  }
+
+  .feature-meta {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+} 

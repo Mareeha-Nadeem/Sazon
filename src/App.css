@@ -2,7 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
 }
 
 .home-page {
@@ -20,8 +19,6 @@
   height: 100dvh;
   object-fit: cover;
   z-index: -1; 
-
-
 }
 
 .video-overlay {
@@ -47,22 +44,6 @@
   padding: 2rem;
 }
 
-
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  background-color: rgba(0, 0, 0, 0.8); 
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-  z-index: 999;
-  backdrop-filter: blur(5px); 
-}
-
 .navbar a {
   text-decoration: none;
   color: white;
@@ -70,10 +51,7 @@
   transition: color 0.2s ease-in-out;
 }
 
-
-
 .logout-btn {
-  
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -81,10 +59,7 @@
   border-radius: 4px;
   font-weight: bold;
   transition: background-color 0.2s ease-in-out;
-}/* Base styling */
-
-
-
+}
 
 /* Main content layout */
 .home-content {
@@ -111,33 +86,41 @@
 
 /* Logo styling */
 .logo-container {
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;
+  left: unset;
+  top: unset;
+  transform: none;
   display: flex;
   gap: 2px;
   z-index: 15;
+  margin-bottom: 16px;
+  justify-content: flex-start;
+  margin-left: 0;
 }
 
+@media (min-width: 769px) {
+  .logo-container {
+    margin-left: 0;
+  }
+  .content-wrapper {
+    align-items: flex-start;
+  }
+}
 
 .logo {
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
 }
 
 .primary-logo {
-  
   height: 120px;
   width: auto;
   margin-top: 0%;
-  
 }
 
 .secondary-logo {
   height: 69px;
   width: auto;
   margin-top: 25px;
-  
 }
 
 /* Text styling */

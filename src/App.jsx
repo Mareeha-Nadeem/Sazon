@@ -7,8 +7,8 @@ import Signup from "./pages/signup";
 import Menu from "./pages/menu";
 import Cart from "./pages/cart";
 import Navbar from "./components/navbar";
-import Footer from "./components/footer"; // Import the new Footer component
-import ExploreCarousel from "./components/ExploreCarousel"; // Importing explore banner carousel
+import Footer from "./components/footer";
+import Explore from "./pages/Explore";
 import './App.css';
 
 function Home() {
@@ -32,7 +32,6 @@ function Home() {
 
   return (
     <div className="home-container">
-      {/* Hero Section with Video Background */}
       <div className="home-page">
         <video autoPlay loop={false} muted className="background-video">
           <source src="/bg.mp4" type="video/mp4" />
@@ -104,7 +103,7 @@ export default function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/explore" element={<ExploreCarousel />} />
+          <Route path="/explore" element={<Explore />} />
         </Routes>
       </PageLayout>
     </Router>
